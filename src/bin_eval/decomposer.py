@@ -8,6 +8,7 @@ completeness, consistency, relevance).
 from __future__ import annotations
 
 import json
+import re
 
 from google.adk.agents import Agent
 
@@ -47,8 +48,7 @@ def decompose(
     response = call_llm_sync(prompt=prompt, system=DECOMPOSER_SYSTEM)
 
     # Parse JSON response
-    try:
-        text = response.strip()
+    def _extract_json_block(text: str) -> str:
         if text.startswith("```"):
             lines = text.split("\n")
             json_lines = []
@@ -61,9 +61,39 @@ def decompose(
                     break
                 elif in_block:
                     json_lines.append(line)
-            text = "\n".join(json_lines)
+            return "\n".join(json_lines)
+        match = re.search(r"(\{.*\})", text, re.DOTALL)
+        return match.group(1) if match else text
 
-        data = json.loads(text)
+    def _repair_json(text: str) -> str:
+        text = text.strip()
+
+        # Trim trailing incomplete content until the JSON ends with a closing
+        # brace or bracket.
+        while text and text[-1] not in "}]":
+            text = text[:-1].rstrip()
+
+        # Remove trailing commas before closing brackets/braces.
+        text = re.sub(r",\s*([\]}])\s*$", r"\1", text)
+
+        # Balance braces and brackets if the response was truncated.
+        open_braces = text.count("{") - text.count("}")
+        open_brackets = text.count("[") - text.count("]")
+        if open_brackets > 0:
+            text += "]" * open_brackets
+        if open_braces > 0:
+            text += "}" * open_braces
+
+        return text
+
+    try:
+        text = response.strip()
+        text = _extract_json_block(text)
+        try:
+            data = json.loads(text)
+        except json.JSONDecodeError:
+            repaired = _repair_json(text)
+            data = json.loads(repaired)
     except json.JSONDecodeError:
         return [], []
 

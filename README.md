@@ -48,19 +48,32 @@ src/bin_eval/
 ## How to Run
 
 ```bash
-# Run evaluation on a sample document
-bin-eval \
+# Run evaluation on a sample document from the repo root
+cd /Users/test/git-repos/bin-eval-impl
+uv run bin-eval \
   --document examples/sample_document.txt \
   --schema examples/sample_schema.json \
   --task "Extract all invoice fields including metadata, billing info, line items, and totals" \
   --output result.json
 
 # With affine rescaling to 1-5 scale
-bin-eval \
+uv run bin-eval \
   --document examples/sample_document.txt \
   --schema examples/sample_schema.json \
   --scale-min 1.0 --scale-max 5.0 \
   --output result.json
+```
+
+Example output:
+
+```text
+Results written to: result.json
+Overall confidence: 1.0000
+Sections evaluated: 6
+Questions evaluated: 17
+
+Dimension scores:
+  factual_support: 1.0000 (17/17 passed)
 ```
 
 ## BinEval Concepts → Document Extraction Mapping

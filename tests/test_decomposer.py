@@ -74,3 +74,23 @@ class TestDecomposer:
         )
         assert requirements == []
         assert questions == []
+
+    @patch(
+        "bin_eval.decomposer.call_llm_sync",
+        return_value='''```json
+{
+  "requirements": [
+    {"id": "req_1", "text": "Invoice number must be extracted", "dimension": "completeness"}
+  ],
+  "questions": [
+    {"id": "q_1", "requirement_id": "req_1", "dimension": "completeness", "text": "Is the invoice_number field present in the extraction output?", "violation_example": "Field is missing from output"}
+  ]
+```''',
+    )
+    def test_decompose_handles_fenced_json(self, mock_llm):
+        requirements, questions = decompose(
+            task_prompt="Extract invoice fields",
+            extraction_schema="{}",
+        )
+        assert len(requirements) == 1
+        assert len(questions) == 1

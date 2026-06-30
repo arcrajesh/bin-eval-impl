@@ -39,6 +39,15 @@ def extract_document(
     """
     from bin_eval.llm import call_llm_sync
 
+    def _normalize_string(value: object) -> str:
+        if isinstance(value, str):
+            return value
+        if value is None:
+            return ""
+        if isinstance(value, (list, dict)):
+            return json.dumps(value, ensure_ascii=False)
+        return str(value)
+
     prompt = EXTRACTOR_USER.format(
         source_document=source_document,
         extraction_schema=extraction_schema,
@@ -77,21 +86,21 @@ def extract_document(
         for field_data in section_data.get("fields", []):
             fields.append(
                 ExtractedField(
-                    name=field_data.get("name", ""),
-                    value=field_data.get("value", ""),
-                    confidence=field_data.get("confidence", 1.0),
-                    source_span=field_data.get("source_span", ""),
+                    name=_normalize_string(field_data.get("name", "")),
+                    value=_normalize_string(field_data.get("value", "")),
+                    confidence=float(field_data.get("confidence", 1.0)),
+                    source_span=_normalize_string(field_data.get("source_span", "")),
                 )
             )
         sections.append(
             ExtractedSection(
-                name=section_data.get("name", ""),
+                name=_normalize_string(section_data.get("name", "")),
                 fields=fields,
             )
         )
 
     return ExtractedDocument(
-        document_id=data.get("document_id", ""),
+        document_id=_normalize_string(data.get("document_id", "")),
         sections=sections,
         raw_text=source_document,
     )
