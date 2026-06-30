@@ -1,0 +1,44 @@
+INVOICE #INV-2024-0042
+
+Date: March 15, 2024
+Due Date: April 14, 2024
+
+Bill To:
+  Acme Corporation
+  123 Business Ave, Suite 400
+  San Francisco, CA 94105
+  Contact: John Smith (john.smith@acme.com)
+
+From:
+  TechServices LLC
+  456 Innovation Blvd
+  Austin, TX 78701
+  Contact: Jane Doe (jane.doe@techservices.com)
+
+Items:
+  1. Cloud Infrastructure Setup
+     Quantity: 1
+     Unit Price: $5,000.00
+     Total: $5,000.00
+
+  2. Monthly Maintenance (Q1 2024)
+     Quantity: 3
+     Unit Price: $1,500.00
+     Total: $4,500.00
+
+  3. Security Audit
+     Quantity: 1
+     Unit Price: $3,200.00
+     Total: $3,200.00
+
+Subtotal: $12,700.00
+Tax (8.25%): $1,047.75
+Total Due: $13,747.75
+
+Payment Terms: Net 30
+Payment Method: Wire Transfer
+
+Notes:
+  - All services rendered January-March 2024
+  - Security audit report delivered separately
+  - Next quarterly maintenance begins April 2024

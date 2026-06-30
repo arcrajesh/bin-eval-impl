@@ -1,0 +1,52 @@
+{
+  "sections": [
+    {
+      "name": "invoice_metadata",
+      "fields": [
+        {"name": "invoice_number", "type": "string", "description": "Invoice identifier"},
+        {"name": "date", "type": "date", "description": "Invoice issue date"},
+        {"name": "due_date", "type": "date", "description": "Payment due date"}
+      ]
+    },
+    {
+      "name": "billing_info",
+      "fields": [
+        {"name": "bill_to_company", "type": "string", "description": "Name of billing recipient company"},
+        {"name": "bill_to_address", "type": "string", "description": "Full billing address"},
+        {"name": "bill_to_contact", "type": "string", "description": "Contact person name"},
+        {"name": "bill_to_email", "type": "email", "description": "Contact email"}
+      ]
+    },
+    {
+      "name": "sender_info",
+      "fields": [
+        {"name": "from_company", "type": "string", "description": "Name of sending company"},
+        {"name": "from_address", "type": "string", "description": "Sender address"},
+        {"name": "from_contact", "type": "string", "description": "Sender contact person"},
+        {"name": "from_email", "type": "email", "description": "Sender email"}
+      ]
+    },
+    {
+      "name": "line_items",
+      "fields": [
+        {"name": "items", "type": "array", "description": "List of line items with description, quantity, unit_price, total"}
+      ]
+    },
+    {
+      "name": "totals",
+      "fields": [
+        {"name": "subtotal", "type": "currency", "description": "Sum before tax"},
+        {"name": "tax_rate", "type": "percentage", "description": "Tax rate applied"},
+        {"name": "tax_amount", "type": "currency", "description": "Tax amount"},
+        {"name": "total_due", "type": "currency", "description": "Final amount due"}
+      ]
+    },
+    {
+      "name": "payment_terms",
+      "fields": [
+        {"name": "terms", "type": "string", "description": "Payment terms (e.g., Net 30)"},
+        {"name": "method", "type": "string", "description": "Payment method"}
+      ]
+    }
+  ]
+}
